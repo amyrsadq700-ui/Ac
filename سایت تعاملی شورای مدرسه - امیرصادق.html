@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>امیرصادق | شورای دبیرستان صدرا</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lightBg: '#f8fafc',
+                        surfaceWhite: '#ffffff',
+                        brandBlue: '#2563eb',
+                        brandBlueHover: '#1d4ed8',
+                        skyAccent: '#0ea5e9',
+                        textDark: '#0f172a',
+                        textMuted: '#64748b',
+                        borderSubtle: '#e2e8f0',
+                    },
+                    fontFamily: {
+                        vazir: ['Vazirmatn', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        /* Minimal Grid Background Pattern */
+        .bg-grid-pattern {
+            background-size: 32px 32px;
+            background-image: 
+                linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+        }
+
+        /* Minimalist Modern Card Styling */
+        .minimal-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 1px 2px -1px rgba(15, 23, 42, 0.02);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .minimal-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: #3b82f6;
+            box-shadow: 0 20px 30px -10px rgba(37, 99, 235, 0.12), 0 8px 10px -6px rgba(37, 99, 235, 0.04);
+        }
+
+        /* Scroll Zoom Reveal Animation */
+        .reveal-zoom {
+            opacity: 0;
+            transform: scale(0.92) translateY(24px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal-zoom.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Gradient Text Accent */
+        .gradient-text-blue {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #0ea5e9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Interactive Canvas Touch & Cursor */
+        .interactive-canvas {
+            touch-action: none;
+            cursor: grab;
+        }
+        .interactive-canvas:active {
+            cursor: grabbing;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8fafc;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-lightBg text-textDark bg-grid-pattern selection:bg-brandBlue selection:text-white">
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-borderSubtle px-6 py-4 transition-all duration-300">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brandBlue flex items-center justify-center text-white font-black text-lg shadow-sm shadow-brandBlue/20">
+                    آ
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm text-textDark leading-none">امیرصادق</h1>
+                    <span class="text-[11px] text-textMuted font-medium">شورای دبیرستان صدرا</span>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-semibold text-textMuted">
+                <a href="#hero" class="hover:text-brandBlue transition-colors">معرفی</a>
+                <a href="#skills" class="hover:text-brandBlue transition-colors">خدمات</a>
+                <a href="#interactive-lab" class="hover:text-brandBlue transition-colors">بازی‌ها و آزمایش آنلاین</a>
+                <a href="#home-experiments" class="hover:text-brandBlue transition-colors">آزمایش در خانه</a>
+            </nav>
+
+            <button onclick="triggerSupport()" class="bg-brandBlue hover:bg-brandBlueHover text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-sm shadow-brandBlue/20 transition-all active:scale-95 flex items-center gap-2">
+                <i class="fa-solid fa-check text-[11px]"></i>
+                <span>ثبت رای حمایتی</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="pt-36 pb-16 px-4 max-w-5xl mx-auto text-center flex flex-col items-center justify-center min-h-[75vh]">
+        <div class="reveal-zoom inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-brandBlue text-xs font-semibold mb-8 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-brandBlue animate-ping"></span>
+            <span>انتخابات شورای دبیرستان صدرا — پایه هفتم و تمام مقاطع</span>
+        </div>
+
+        <h1 class="reveal-zoom text-4xl sm:text-6xl md:text-7xl font-black mb-6 leading-tight tracking-tight text-textDark">
+            مدرسه‌ای <span class="gradient-text-blue">پویا، هوشمند</span> <br class="hidden sm:block" />
+            و سرگرم‌کننده برای همه
+        </h1>
+
+        <p class="reveal-zoom text-textMuted text-base sm:text-lg md:text-xl max-w-2xl mb-10 leading-relaxed font-normal">
+            سلام! من <span class="text-textDark font-bold">امیرصادق</span> هستم. هدف من ایجاد فضای آموزشی جذاب، به‌روز و پشتیبانی از ایده‌های نرم‌افزاری و تفریحی تمام بچه‌های مدرسه صدرا است.
+        </p>
+
+        <div class="reveal-zoom flex flex-wrap items-center justify-center gap-4">
+            <a href="#interactive-lab" class="bg-brandBlue hover:bg-brandBlueHover text-white font-bold text-sm px-8 py-4 rounded-xl shadow-lg shadow-brandBlue/20 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
+                <i class="fa-solid fa-gamepad"></i>
+                <span>همونجا آنلاین بازی کن!</span>
+            </a>
+            <a href="#skills" class="bg-white hover:bg-slate-50 border border-slate-300 text-textDark font-bold text-sm px-8 py-4 rounded-xl shadow-sm transition-all hover:scale-105 active:scale-95">
+                لیست ۱۲ خدمت ویژه
+            </a>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE ONLINE LAB & MINI-GAMES (PLAY DIRECTLY ON PAGE!) -->
+    <section id="interactive-lab" class="py-20 px-4 max-w-6xl mx-auto">
+        <div class="text-center mb-12 reveal-zoom">
+            <div class="inline-block px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-brandBlue text-xs font-bold mb-3">
+                مخصوص بچه‌های پایه هفتم
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-textDark mb-3">
+                آزمایش‌ها و بازی‌های آنلاین تعاملی
+            </h2>
+            <p class="text-textMuted text-sm sm:text-base max-w-xl mx-auto">
+                بدون نیاز به نصب، مستقیماً همین‌جا با ماوس یا لمس روی گوشی بازی کنید و قوانین فیزیک و علوم را تجربه کنید!
+            </p>
+        </div>
+
+        <!-- Game Select Tabs -->
+        <div class="reveal-zoom flex flex-wrap justify-center gap-3 mb-8">
+            <button onclick="switchLab('magnet')" id="tab-magnet" class="lab-tab-btn active bg-brandBlue text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition-all shadow-sm">
+                🧲 بازی آهن‌ربا و جذب مواد
+            </button>
+            <button onclick="switchLab('density')" id="tab-density" class="lab-tab-btn bg-white hover:bg-slate-100 border border-slate-200 text-textDark font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition-all shadow-sm">
+                💧 آزمایش شناوری و غرق شدن
+            </button>
+            <button onclick="switchLab('plant')" id="tab-plant" class="lab-tab-btn bg-white hover:bg-slate-100 border border-slate-200 text-textDark font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition-all shadow-sm">
+                🌱 رشد گیاه به سمت نور
+            </button>
+            <button onclick="switchLab('rocket')" id="tab-rocket" class="lab-tab-btn bg-white hover:bg-slate-100 border border-slate-200 text-textDark font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition-all shadow-sm">
+                🚀 پرتاب موشک آبی
+            </button>
+        </div>
+
+        <!-- Game Container Box -->
+        <div class="reveal-zoom bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 relative overflow-hidden min-h-[480px] flex flex-col justify-between">
+            
+            <!-- GAME 1: MAGNET LAB -->
+            <div id="game-magnet" class="lab-game-view">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <h3 class="font-extrabold text-lg text-textDark">بازی آهن‌ربا: کدام اجسام جذب می‌شوند؟</h3>
+                        <p class="text-xs text-textMuted">آهن‌ربا را با لمس یا ماوس حرکت دهید و ببینید کدام مواد مغناطیسی هستند!</p>
+                    </div>
+                    <div class="text-xs bg-blue-50 text-brandBlue px-3 py-1.5 rounded-lg font-bold">
+                        امتیاز جذب: <span id="magnet-score">۰</span> / ۴
+                    </div>
+                </div>
+
+                <div class="relative w-full h-[340px] bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden interactive-canvas" id="magnet-area">
+                    <canvas id="magnetCanvas" class="w-full h-full block"></canvas>
+                </div>
+            </div>
+
+            <!-- GAME 2: DENSITY / SINK OR FLOAT -->
+            <div id="game-density" class="lab-game-view hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <h3 class="font-extrabold text-lg text-textDark">آزمایش چگالی: کدام جسم غرق می‌شود؟</h3>
+                        <p class="text-xs text-textMuted">روی اجسام کلیک کنید یا آن‌ها را درون لوله آب بیندازید تا شناوری آن‌ها را بررسی کنید.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="dropDensityItem('wood')" class="bg-amber-100 hover:bg-amber-200 text-amber-800 text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-300">🪵 تکه چوب</button>
+                        <button onclick="dropDensityItem('iron')" class="bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-400">⚙️ گوی آهنی</button>
+                        <button onclick="dropDensityItem('duck')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 text-xs font-bold px-3 py-1.5 rounded-lg border border-yellow-300">🦆 اردک پلاستیکی</button>
+                        <button onclick="dropDensityItem('stone')" class="bg-stone-200 hover:bg-stone-300 text-stone-800 text-xs font-bold px-3 py-1.5 rounded-lg border border-stone-400">🪨 سنگ چگال</button>
+                    </div>
+                </div>
+
+                <div class="relative w-full h-[340px] bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden" id="density-area">
+                    <canvas id="densityCanvas" class="w-full h-full block"></canvas>
+                </div>
+            </div>
+
+            <!-- GAME 3: PLANT PHOTOTROPISM -->
+            <div id="game-plant" class="lab-game-view hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <h3 class="font-extrabold text-lg text-textDark">فتوتروپیسم: جهت‌گیری گیاه به سمت نور</h3>
+                        <p class="text-xs text-textMuted">خورشید/چراغ نور را حرکت دهید و رشد ساقه گیاه به سمت نور را ببینید!</p>
+                    </div>
+                    <span class="text-xs text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-lg font-bold">🌱 فتوسنتز فعال</span>
+                </div>
+
+                <div class="relative w-full h-[340px] bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden interactive-canvas" id="plant-area">
+                    <canvas id="plantCanvas" class="w-full h-full block"></canvas>
+                </div>
+            </div>
+
+            <!-- GAME 4: WATER ROCKET SIMULATOR -->
+            <div id="game-rocket" class="lab-game-view hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <h3 class="font-extrabold text-lg text-textDark">شبیه‌ساز موشک آبی: قانون سوم نیوتون</h3>
+                        <p class="text-xs text-textMuted">میزان آب و فشار هوا را تنظیم کنید و دکمه پرتاب را بزنید!</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <label class="text-xs font-bold text-textMuted">فشار پمپ: <span id="pressure-val" class="text-brandBlue">۵۰</span> PSI</label>
+                        <input type="range" id="pressureRange" min="10" max="100" value="50" oninput="document.getElementById('pressure-val').innerText = this.value" class="w-24 accent-brandBlue">
+                        <button onclick="launchWaterRocket()" class="bg-brandBlue hover:bg-brandBlueHover text-white text-xs font-bold px-4 py-2 rounded-xl shadow font-vazir">🚀 پرتاب موشک!</button>
+                    </div>
+                </div>
+
+                <div class="relative w-full h-[340px] bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden" id="rocket-area">
+                    <canvas id="rocketCanvas" class="w-full h-full block"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- HOME EXPERIMENTS SECTION -->
+    <section id="home-experiments" class="py-20 px-4 max-w-6xl mx-auto border-t border-borderSubtle">
+        <div class="text-center mb-16 reveal-zoom">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-textDark mb-3">
+                آزمایش‌های هیجان‌انگیز قابل انجام در خانه
+            </h2>
+            <p class="text-textMuted text-sm sm:text-base max-w-md mx-auto">
+                دستورالعمل‌های قدم به قدم آزمایش‌های علمی با وسایل ساده خانگی برای بچه‌های کلاس هفتم
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <!-- Exp 1 -->
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl">
+                <div class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-2xl mb-4">
+                    🌋
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-2">آتشفشان خانگی</h3>
+                <p class="text-textMuted text-xs leading-relaxed mb-4">ترکیب جوش‌شیرین + سرکه + رنگ خوراکی برای تولید گاز دی‌اکسیدکربن و فوران جذاب.</p>
+                <button onclick="showDetail('آتشفشان خانگی', 'وسایل لازم: جوش شیرین، سرکه، رنگ خوراکی و مایع ظرفشویی.\nروش کار: در یک بطری دو قاشق جوش شیرین و کمی رنگ بریزید، سپس سرکه را اضافه کنید تا فوران سریع گاز رخ دهد!')" class="text-xs text-brandBlue font-bold hover:underline">مشاهده دستور کار ➔</button>
+            </div>
+
+            <!-- Exp 2 -->
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl">
+                <div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-2xl mb-4">
+                    💎
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-2">کشت بلورهای شکر</h3>
+                <p class="text-textMuted text-xs leading-relaxed mb-4">تهیه محلول فوق‌اشباع آب و شکر و مشاهده تبلور مولکولی روی نخ ظرف چند روز.</p>
+                <button onclick="showDetail('کشت بلور', 'وسایل لازم: شکر، آب جوش، نخ، لیوان شیشه‌ای.\nروش کار: شکر را در آب جوش حل کنید تا دیگر حل نشود. نخ را آویزان کنید و چند روز صبور باشید تا بلورهای درخشان تشکیل شوند.')" class="text-xs text-brandBlue font-bold hover:underline">مشاهده دستور کار ➔</button>
+            </div>
+
+            <!-- Exp 3 -->
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl">
+                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4">
+                    🌈
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-2">رنگین‌کمان در بطری</h3>
+                <p class="text-textMuted text-xs leading-relaxed mb-4">لایه‌بندی مایعات مختلف (عسل، مایع ظرفشویی، آب رنگی، روغن) بر اساس اختلاف چگالی.</p>
+                <button onclick="showDetail('رنگین‌کمان مایعات', 'وسایل لازم: عسل، مایع ظرفشویی، آب با رنگ خوراکی، روغن مایع.\nروش کار: مایعات را به آرامی به ترتیب چگالی وارد بطری کنید تا لایه‌های رنگی بدون مخلوط شدن روی هم شناور بمانند.')" class="text-xs text-brandBlue font-bold hover:underline">مشاهده دستور کار ➔</button>
+            </div>
+
+            <!-- Exp 4 -->
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl">
+                <div class="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-2xl mb-4">
+                    ☁️
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-2">تشکیل ابر در بطری</h3>
+                <p class="text-textMuted text-xs leading-relaxed mb-4">ایجاد میعان بخار آب با تغییر ناگهانی فشار و استفاده از ذرات دود کبریت به عنوان هسته میعان.</p>
+                <button onclick="showDetail('ابر در بطری', 'وسایل لازم: بطری پلاستیکی شفاف، کمی آب، یک چوب کبریت روشن.\nروش کار: دود کبریت را وارد بطری کنید، درب آن را ببندید و بطری را فشار دهید و رها کنید تا ابر غلیظ تشکیل شود.')" class="text-xs text-brandBlue font-bold hover:underline">مشاهده دستور کار ➔</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 12 SKILLS & SERVICES GRID SECTION -->
+    <section id="skills" class="py-20 px-4 max-w-6xl mx-auto border-t border-borderSubtle">
+        <div class="text-center mb-16 reveal-zoom">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-textDark mb-3">
+                توانمندی‌ها و خدمات امیرصادق
+            </h2>
+            <p class="text-textMuted text-sm sm:text-base max-w-md mx-auto">
+                ۱۲ مهارت و پشتیبانی ویژه برای تمامی همکلاسی‌های دبیرستان صدرا
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl cursor-pointer group" onclick="showDetail('ساخت پوستر', 'طراحی پوسترهای حرفه‌ای و باکیفیت برای مراسم‌ها، کلاس‌ها و گروه‌های مدرسه.')">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center text-xl mb-4 group-hover:bg-brandBlue group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-image"></i>
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-1">ساخت پوستر</h3>
+                <p class="text-textMuted text-xs leading-relaxed">طراحی پوستر مدرن کلاسی و پرورشی.</p>
+            </div>
+
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl cursor-pointer group" onclick="showDetail('تولید تصویر', 'ساخت آرت‌ورک‌ها، کاورها و تصاویر سه‌بعدی با ابزارهای روز.')">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center text-xl mb-4 group-hover:bg-brandBlue group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-palette"></i>
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-1">تولید تصویر</h3>
+                <p class="text-textMuted text-xs leading-relaxed">تصویرسازی دیجیتال برای کنفرانس‌ها.</p>
+            </div>
+
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl cursor-pointer group" onclick="showDetail('لوگوموشن', 'پویانمایی لوگوی گروه‌ها، تیم‌های ورزشی و کانال‌های کلاسی.')">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center text-xl mb-4 group-hover:bg-brandBlue group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-film"></i>
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-1">لوگوموشن</h3>
+                <p class="text-textMuted text-xs leading-relaxed">ساخت تیزرهای پویانمایی لوگو.</p>
+            </div>
+
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl cursor-pointer group" onclick="showDetail('ادیت ویدیو', 'تدوین کلیپ‌های اردو، مسابقات و ویدیوهای دانش‌آموزی.')">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center text-xl mb-4 group-hover:bg-brandBlue group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-video"></i>
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-1">ادیت ویدیو</h3>
+                <p class="text-textMuted text-xs leading-relaxed">ویرایش حرفه‌ای کلیپ‌های ویدئویی.</p>
+            </div>
+
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl cursor-pointer group" onclick="showDetail('جلوه‌های ویدئویی', 'افزودن افکت‌های ویژه بصری (VFX) به ویدیوها.')">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center text-xl mb-4 group-hover:bg-brandBlue group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-1">جلوه‌های ویدئویی</h3>
+                <p class="text-textMuted text-xs leading-relaxed">پیاده‌سازی افکت‌های سینمایی بصری.</p>
+            </div>
+
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl cursor-pointer group" onclick="showDetail('ساخت ویدیو فیک', 'تولید محتوای طنز محترمانه و چالش‌های زنگ تفریح.')">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center text-xl mb-4 group-hover:bg-brandBlue group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-face-smile"></i>
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-1">ساخت ویدیو فیک</h3>
+                <p class="text-textMuted text-xs leading-relaxed">ساخت کلیپ‌های سرگرم‌کننده شاد.</p>
+            </div>
+
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl cursor-pointer group" onclick="showDetail('آموزش ویندوز', 'ارائه ترفندهای سیستم‌عامل، رفع اشکال نرم‌افزاری و نصب برنامه‌ها.')">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center text-xl mb-4 group-hover:bg-brandBlue group-hover:text-white transition-colors">
+                    <i class="fa-brands fa-windows"></i>
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-1">آموزش ویندوز</h3>
+                <p class="text-textMuted text-xs leading-relaxed">حل مشکلات نرم‌افزاری کامپیوتر.</p>
+            </div>
+
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl cursor-pointer group" onclick="showDetail('گوگل میت', 'برگزاری کلاس‌های آنلاین رفع اشکال درسی و مطالعاتی.')">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center text-xl mb-4 group-hover:bg-brandBlue group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-1">گوگل میت</h3>
+                <p class="text-textMuted text-xs leading-relaxed">مدیریت وبینارها و روم‌های مطالعه.</p>
+            </div>
+
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl cursor-pointer group" onclick="showDetail('ساخت بازی', 'برنامه‌نویسی و طراحی بازی‌های ساده آنلاین برای لیگ‌های مدرسه.')">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center text-xl mb-4 group-hover:bg-brandBlue group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-gamepad"></i>
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-1">ساخت بازی</h3>
+                <p class="text-textMuted text-xs leading-relaxed">طراحی بازی‌های آنلاین دو بعدی.</p>
+            </div>
+
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl cursor-pointer group" onclick="showDetail('اکانت پریمیوم بازی', 'مشاوره و پشتیبانی حساب‌های گیمینگ و اشتراک‌های آنلاین.')">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center text-xl mb-4 group-hover:bg-brandBlue group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-1">اکانت پریمیوم</h3>
+                <p class="text-textMuted text-xs leading-relaxed">مشاوره امکانات گیمینگ آنلاین.</p>
+            </div>
+
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl cursor-pointer group" onclick="showDetail('خرید برای بازی‌ها', 'پشتیبانی ایمن خریدهای درون‌برنامه‌ای برای دوستان.')">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center text-xl mb-4 group-hover:bg-brandBlue group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-1">خرید برای بازی‌ها</h3>
+                <p class="text-textMuted text-xs leading-relaxed">پشتیبانی ایمن آیتم‌های بازی.</p>
+            </div>
+
+            <div class="reveal-zoom minimal-card p-6 rounded-2xl cursor-pointer group" onclick="showDetail('و خدمات دیگر...', 'پشتیبانی از هر طرح کامپیوتر، رباتیک و ایده‌های شما.')">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center text-xl mb-4 group-hover:bg-brandBlue group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-sparkles"></i>
+                </div>
+                <h3 class="text-base font-bold text-textDark mb-1">و خدمات دیگر...</h3>
+                <p class="text-textMuted text-xs leading-relaxed">استقبال از کلیه طرح‌های نوین شما.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- VOTING SECTION -->
+    <section id="vision" class="py-20 px-4 max-w-4xl mx-auto">
+        <div class="reveal-zoom bg-white p-10 md:p-14 rounded-3xl text-center border border-slate-200 shadow-xl shadow-slate-200/50 relative overflow-hidden">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-textDark mb-4">
+                رای ما: <span class="text-brandBlue">امیرصادق</span>
+            </h2>
+            <p class="text-textMuted text-sm sm:text-base leading-relaxed mb-8 max-w-lg mx-auto">
+                برای مدرسه‌ای پویاتر، علمی‌تر و پر از بازی‌ها و برنامه‌های آنلاین هیجان‌انگیز!
+            </p>
+            <button onclick="triggerSupport()" class="bg-brandBlue hover:bg-brandBlueHover text-white font-bold text-sm px-9 py-4 rounded-xl shadow-lg shadow-brandBlue/25 transition-all transform hover:scale-105 active:scale-95">
+                ثبت رای حمایتی از امیرصادق ✨
+            </button>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-8 text-center text-xs text-textMuted border-t border-slate-200 font-medium">
+        <p>طراحی شده برای کاندیداتوری امیرصادق | دبیرستان صدرا</p>
+    </footer>
+
+    <!-- MODAL -->
+    <div id="simpleModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white max-w-sm w-full p-7 rounded-2xl border border-slate-200 shadow-2xl text-center relative animate-in fade-in zoom-in duration-200 whitespace-pre-line">
+            <h3 id="modalTitle" class="text-lg font-bold text-textDark mb-3">عنوان</h3>
+            <p id="modalDesc" class="text-textMuted text-xs leading-relaxed mb-6 text-right">توضیحات</p>
+            <button onclick="closeModal()" class="w-full bg-brandBlue hover:bg-brandBlueHover text-white text-xs font-bold py-3 rounded-xl transition-colors">
+                متوجه شدم
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT ANIMATIONS & ONLINE GAMES CODE -->
+    <script>
+        // SCROLL REVEAL (ZOOM IN ANIMATION)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -40px 0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-zoom').forEach(element => {
+            observer.observe(element);
+        });
+
+        function showDetail(title, desc) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalDesc').innerText = desc;
+            document.getElementById('simpleModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('simpleModal').classList.add('hidden');
+        }
+
+        function triggerSupport() {
+            confetti({
+                particleCount: 80,
+                spread: 60,
+                origin: { y: 0.7 },
+                colors: ['#2563eb', '#0ea5e9', '#3b82f6', '#60a5fa']
+            });
+        }
+
+        // TAB SWITCHING FOR GAMES
+        function switchLab(gameKey) {
+            document.querySelectorAll('.lab-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-brandBlue', 'text-white');
+                btn.classList.add('bg-white', 'text-textDark');
+            });
+            document.getElementById('tab-' + gameKey).classList.remove('bg-white', 'text-textDark');
+            document.getElementById('tab-' + gameKey).classList.add('bg-brandBlue', 'text-white');
+
+            document.querySelectorAll('.lab-game-view').forEach(view => view.classList.add('hidden'));
+            document.getElementById('game-' + gameKey).classList.remove('hidden');
+
+            // Trigger canvas resize
+            if(gameKey === 'magnet') initMagnetGame();
+            if(gameKey === 'density') initDensityGame();
+            if(gameKey === 'plant') initPlantGame();
+            if(gameKey === 'rocket') initRocketGame();
+        }
+
+        // ==========================================
+        // 1. MAGNET GAME LOGIC (آزمایش آنلاین آهن‌ربا)
+        // ==========================================
+        let magnetCtx, magnetCanvas;
+        let magnet = { x: 150, y: 150, width: 80, height: 40, isDragging: false };
+        let magnetItems = [
+            { id: 1, name: 'میخ آهنی 🔩', x: 80, y: 250, magnetic: true, trapped: false },
+            { id: 2, name: 'تکه چوب 🪵', x: 200, y: 260, magnetic: false, trapped: false },
+            { id: 3, name: 'سکه فلزی 🪙', x: 320, y: 240, magnetic: true, trapped: false },
+            { id: 4, name: 'مداد ✏️', x: 440, y: 250, magnetic: false, trapped: false },
+            { id: 5, name: 'گیره کاغذ 📎', x: 520, y: 260, magnetic: true, trapped: false },
+            { id: 6, name: 'کلید آهنی 🔑', x: 620, y: 240, magnetic: true, trapped: false },
+        ];
+
+        function initMagnetGame() {
+            magnetCanvas = document.getElementById('magnetCanvas');
+            const parent = magnetCanvas.parentElement;
+            magnetCanvas.width = parent.clientWidth;
+            magnetCanvas.height = parent.clientHeight;
+            magnetCtx = magnetCanvas.getContext('2d');
+
+            magnetCanvas.onmousedown = magnetCanvas.ontouchstart = (e) => {
+                magnet.isDragging = true;
+            };
+            window.onmouseup = window.ontouchend = () => {
+                magnet.isDragging = false;
+            };
+            magnetCanvas.onmousemove = magnetCanvas.ontouchmove = (e) => {
+                const rect = magnetCanvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                if (magnet.isDragging) {
+                    magnet.x = clientX - rect.left - magnet.width / 2;
+                    magnet.y = clientY - rect.top - magnet.height / 2;
+                }
+            };
+
+            requestAnimationFrame(drawMagnetLoop);
+        }
+
+        function drawMagnetLoop() {
+            if(!magnetCtx) return;
+            magnetCtx.clearRect(0, 0, magnetCanvas.width, magnetCanvas.height);
+
+            // Draw Magnet (Red North / Blue South)
+            magnetCtx.fillStyle = '#ef4444';
+            magnetCtx.fillRect(magnet.x, magnet.y, magnet.width/2, magnet.height);
+            magnetCtx.fillStyle = '#2563eb';
+            magnetCtx.fillRect(magnet.x + magnet.width/2, magnet.y, magnet.width/2, magnet.height);
+
+            magnetCtx.fillStyle = '#ffffff';
+            magnetCtx.font = 'bold 12px Vazirmatn';
+            magnetCtx.fillText('N', magnet.x + 10, magnet.y + 24);
+            magnetCtx.fillText('S', magnet.x + magnet.width - 20, magnet.y + 24);
+
+            let score = 0;
+            // Draw Items & Physics attraction
+            magnetItems.forEach(item => {
+                const itemCenterX = item.x;
+                const itemCenterY = item.y;
+                const magCenterX = magnet.x + magnet.width/2;
+                const magCenterY = magnet.y + magnet.height/2;
+
+                const dx = magCenterX - itemCenterX;
+                const dy = magCenterY - itemCenterY;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+
+                if (item.magnetic && dist < 120) {
+                    item.x += dx * 0.1;
+                    item.y += dy * 0.1;
+                    if(dist < 40) { item.trapped = true; }
+                }
+
+                if (item.trapped) score++;
+
+                magnetCtx.fillStyle = item.magnetic ? '#0f172a' : '#64748b';
+                magnetCtx.font = '16px Vazirmatn';
+                magnetCtx.fillText(item.name, item.x, item.y);
+            });
+
+            document.getElementById('magnet-score').innerText = score;
+            requestAnimationFrame(drawMagnetLoop);
+        }
+
+        // ==========================================
+        // 2. DENSITY GAME LOGIC (آزمایش شناوری)
+        // ==========================================
+        let densityCtx, densityCanvas;
+        let densityObjects = [];
+
+        function initDensityGame() {
+            densityCanvas = document.getElementById('densityCanvas');
+            const parent = densityCanvas.parentElement;
+            densityCanvas.width = parent.clientWidth;
+            densityCanvas.height = parent.clientHeight;
+            densityCtx = densityCanvas.getContext('2d');
+
+            requestAnimationFrame(drawDensityLoop);
+        }
+
+        function dropDensityItem(type) {
+            if(!densityCanvas) initDensityGame();
+            let item = { x: densityCanvas.width / 2 + (Math.random()*100 - 50), y: 30, vy: 2 };
+            if (type === 'wood') { item.name = '🪵 تکه چوب (شناور)'; item.targetY = densityCanvas.height * 0.45; item.color = '#d97706'; }
+            if (type === 'iron') { item.name = '⚙️ گوی آهنی (غرق)'; item.targetY = densityCanvas.height * 0.88; item.color = '#475569'; }
+            if (type === 'duck') { item.name = '🦆 اردک پلاستیکی (شناور)'; item.targetY = densityCanvas.height * 0.4; item.color = '#eab308'; }
+            if (type === 'stone') { item.name = '🪨 سنگ (غرق)'; item.targetY = densityCanvas.height * 0.85; item.color = '#78716c'; }
+            densityObjects.push(item);
+        }
+
+        function drawDensityLoop() {
+            if(!densityCtx) return;
+            densityCtx.clearRect(0, 0, densityCanvas.width, densityCanvas.height);
+
+            // Water Line
+            const waterLevel = densityCanvas.height * 0.4;
+            densityCtx.fillStyle = 'rgba(14, 165, 233, 0.25)';
+            densityCtx.fillRect(0, waterLevel, densityCanvas.width, densityCanvas.height - waterLevel);
+
+            densityCtx.fillStyle = '#0284c7';
+            densityCtx.font = 'bold 12px Vazirmatn';
+            densityCtx.fillText('سطح آب (چگالی = ۱ g/cm³)', 20, waterLevel + 20);
+
+            // Draw objects with buoyant physics
+            densityObjects.forEach(obj => {
+                if (obj.y < obj.targetY) {
+                    obj.y += obj.vy;
+                }
+                densityCtx.fillStyle = obj.color;
+                densityCtx.font = 'bold 14px Vazirmatn';
+                densityCtx.fillText(obj.name, obj.x, obj.y);
+            });
+
+            requestAnimationFrame(drawDensityLoop);
+        }
+
+        // ==========================================
+        // 3. PLANT PHOTOTROPISM LOGIC (رشد گیاه به سمت نور)
+        // ==========================================
+        let plantCtx, plantCanvas;
+        let sun = { x: 300, y: 60 };
+
+        function initPlantGame() {
+            plantCanvas = document.getElementById('plantCanvas');
+            const parent = plantCanvas.parentElement;
+            plantCanvas.width = parent.clientWidth;
+            plantCanvas.height = parent.clientHeight;
+            plantCtx = plantCanvas.getContext('2d');
+
+            plantCanvas.onmousemove = plantCanvas.ontouchmove = (e) => {
+                const rect = plantCanvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                sun.x = clientX - rect.left;
+                sun.y = Math.min(clientY - rect.top, plantCanvas.height * 0.4);
+            };
+
+            requestAnimationFrame(drawPlantLoop);
+        }
+
+        function drawPlantLoop() {
+            if(!plantCtx) return;
+            plantCtx.clearRect(0, 0, plantCanvas.width, plantCanvas.height);
+
+            // Draw Sun
+            plantCtx.fillStyle = '#f59e0b';
+            plantCtx.beginPath();
+            plantCtx.arc(sun.x, sun.y, 24, 0, Math.PI * 2);
+            plantCtx.fill();
+            plantCtx.fillStyle = '#ffffff';
+            plantCtx.font = '12px Vazirmatn';
+            plantCtx.fillText('☀️ منبع نور', sun.x - 25, sun.y + 4);
+
+            // Pot
+            const potX = plantCanvas.width / 2;
+            const potY = plantCanvas.height - 40;
+            plantCtx.fillStyle = '#b45309';
+            plantCtx.fillRect(potX - 30, potY, 60, 40);
+
+            // Bending Stem physics towards sun
+            plantCtx.strokeStyle = '#16a34a';
+            plantCtx.lineWidth = 8;
+            plantCtx.beginPath();
+            plantCtx.moveTo(potX, potY);
+            
+            const ctrlX = potX + (sun.x - potX) * 0.5;
+            const ctrlY = potY - 100;
+            const endX = potX + (sun.x - potX) * 0.7;
+            const endY = potY - 150;
+
+            plantCtx.quadraticCurveTo(ctrlX, ctrlY, endX, endY);
+            plantCtx.stroke();
+
+            // Leaf at top
+            plantCtx.fillStyle = '#22c55e';
+            plantCtx.beginPath();
+            plantCtx.arc(endX, endY, 14, 0, Math.PI * 2);
+            plantCtx.fill();
+
+            requestAnimationFrame(drawPlantLoop);
+        }
+
+        // ==========================================
+        // 4. WATER ROCKET SIMULATOR (موشک آبی)
+        // ==========================================
+        let rocketCtx, rocketCanvas;
+        let rocket = { y: 240, vy: 0, flying: false };
+
+        function initRocketGame() {
+            rocketCanvas = document.getElementById('rocketCanvas');
+            const parent = rocketCanvas.parentElement;
+            rocketCanvas.width = parent.clientWidth;
+            rocketCanvas.height = parent.clientHeight;
+            rocketCtx = rocketCanvas.getContext('2d');
+
+            requestAnimationFrame(drawRocketLoop);
+        }
+
+        function launchWaterRocket() {
+            if(!rocketCanvas) initRocketGame();
+            const pressure = parseInt(document.getElementById('pressureRange').value);
+            rocket.vy = -(pressure * 0.25);
+            rocket.flying = true;
+        }
+
+        function drawRocketLoop() {
+            if(!rocketCtx) return;
+            rocketCtx.clearRect(0, 0, rocketCanvas.width, rocketCanvas.height);
+
+            if (rocket.flying) {
+                rocket.y += rocket.vy;
+                rocket.vy += 0.4; // Gravity
+                if(rocket.y > rocketCanvas.height - 60) {
+                    rocket.y = rocketCanvas.height - 60;
+                    rocket.flying = false;
+                }
+            } else {
+                rocket.y = rocketCanvas.height - 60;
+            }
+
+            // Draw Water Rocket
+            rocketCtx.fillStyle = '#38bdf8';
+            rocketCtx.fillRect(rocketCanvas.width/2 - 15, rocket.y, 30, 50);
+
+            // Thrust Particles
+            if(rocket.flying && rocket.vy < 0) {
+                rocketCtx.fillStyle = '#0284c7';
+                rocketCtx.beginPath();
+                rocketCtx.arc(rocketCanvas.width/2, rocket.y + 55, Math.random()*15 + 5, 0, Math.PI * 2);
+                rocketCtx.fill();
+            }
+
+            requestAnimationFrame(drawRocketLoop);
+        }
+
+        // Start initial game on page load
+        window.onload = () => {
+            initMagnetGame();
+        };
+    </script>
+</body>
+</html>
